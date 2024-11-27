@@ -24,8 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -93,4 +91,23 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.device, .reload {
+  display: block;
+  width: 100%;
+}
+
+.device {
+  text-align: left;
+  background-color: #213547;
+}
+
+.devices {
+  max-width: 50%;
+  margin: auto;
+}
+
+.reload {
+  margin-top: 1em;
 }

@@ -1,3 +1,4 @@
+import { setupControl } from "./control";
 import { getAuth, getServerUrl, jellyfin } from "./jellyfin_helper";
 
 export function checkAuthStored(){
@@ -42,6 +43,8 @@ export function setupAuth(element: HTMLElement) {
         localStorage.setItem('api-key', auth.data.AccessToken);
         alert("Successfully authenticated");
         validateButton.innerText = "Successfully authenticated!";
+        // switch
+        location.reload();
       }else{
         alert("Invalid credentials");
         validateButton.innerText = "Invalid credentials!";
