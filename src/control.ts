@@ -25,6 +25,35 @@ export function setupControl(element: HTMLElement){
     destAudio.preload = "auto";
     element.appendChild(destAudio);
 
+    const playerOffset = document.createElement('input');
+    playerOffset.type = 'number';
+    playerOffset.classList.add('offset');
+    playerOffset.value = '0';
+    playerOffset.placeholder = 'Player offset (ms)';
+    playerOffset.addEventListener('change', (ev: any) => {
+        getTracker().playerOffset = parseFloat(ev.target["value"]) / 1000.0;
+    });
+    element.appendChild(playerOffset);
+
+    const audioOffset = document.createElement('input');
+    audioOffset.type = 'number';
+    audioOffset.classList.add('offset');
+    audioOffset.value = '0';
+    audioOffset.placeholder = 'Audio specific offset (ms)';
+    audioOffset.addEventListener('change', (ev: any) => {
+        getTracker().audioOffset = parseFloat(ev.target["value"]) / 1000.0;
+    });
+    element.appendChild(audioOffset);
+
+    const forceSyncCheckbox = document.createElement('input');
+    forceSyncCheckbox.type = 'checkbox';
+    forceSyncCheckbox.classList.add('force-sync');
+    forceSyncCheckbox.checked = false;
+    forceSyncCheckbox.addEventListener('change', (ev: any) => {
+        getTracker().forceSync = ev.target["checked"];
+    });
+    element.appendChild(forceSyncCheckbox);
+
     const trackerStatus = document.createElement('div');
     trackerStatus.innerText = 'Tracker status';
     element.appendChild(trackerStatus);

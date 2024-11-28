@@ -19,6 +19,9 @@ class Tracker {
     lastObservedError = 0;
     controller: AbortController | null = null;
     downloadingStatus = -1;
+    playerOffset = 0;
+    audioOffset = 0;
+    forceSync: boolean = false;
 
     curItem: BaseItemDto | null = {"Id": null};
 
@@ -126,14 +129,15 @@ class Tracker {
 
     syncPosition(session: SessionInfoDto){
         if(session.PlayState){
-            if(this.mediaEl.readyState == HTMLMediaElement.HAVE_ENOUGH_DATA || this.mediaEl.readyState == HTMLMediaElement.HAVE_FUTURE_DATA){
-                const desiredPos = session.PlayState.PositionTicks / 10000000;
-                const currentPos = this.mediaEl.currentTime;
-                if(Math.abs(desiredPos - currentPos) > this.syncMargin){
+            if(!session.PlayState.IsPaused){
+                const estimatedNetworkTime = (this.rttTime / 1000.0) / 2.0;
+                const desiredPos = session.PlayState.PositionTicks / 10000000 + estimatedNetworkTime;
+                const currentPos = this.mediaEl.currentTime - this.audioOffset;
+                if(Math.abs(desiredPos - currentPos) > this.syncMargin || this.forceSync){
                     console.log("Playback desync", desiredPos - currentPos);
                     const error =  desiredPos - currentPos;
-                    const offset = (this.rttTime / 1000.0);//error * 0.02;
-                    this.mediaEl.currentTime = desiredPos + offset;
+                    const offset = this.playerOffset;//error * 0.02;
+                    this.mediaEl.currentTime = (desiredPos + offset) + this.audioOffset;
                 }
                 this.lastObservedError = desiredPos - currentPos;
             }
@@ -203,7 +207,7 @@ class Tracker {
         }else if(this.downloadingStatus < -1){
             dlStatus = " using cached " + (-this.downloadingStatus / (1024 * 1024)).toFixed(2) + "mb";
         }
-        this.setStatus(currentItemStatus + " " + wsStatus + " RTT " + this.rttTime.toFixed(2) + "ms ERROR " + this.lastObservedError.toFixed(2) + "s " + dlStatus);  
+        this.setStatus(currentItemStatus + " " + wsStatus + " RTT " + this.rttTime.toFixed(2) + "ms ERROR " + this.lastObservedError.toFixed(2) + "s " + dlStatus + " " + this.playerOffset + " " + this.audioOffset);  
     }
 
     attach(mediaEl: HTMLMediaElement){

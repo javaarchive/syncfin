@@ -22,7 +22,7 @@ export function getAuth(){
 export const jellyfin = new Jellyfin({
     clientInfo: {
         name: 'Syncfin',
-        version: '1.0.0'
+        version: '1.0.1'
     },
     deviceInfo: {
         name: 'Syncfin Instance on ' + navigator.userAgent,
