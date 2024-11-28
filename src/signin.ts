@@ -41,12 +41,12 @@ export function setupAuth(element: HTMLElement) {
       if(typeof auth.data.AccessToken  == "string"){
         localStorage.setItem('server-url', serverURL);
         localStorage.setItem('api-key', auth.data.AccessToken);
-        alert("Successfully authenticated");
+        // alert("Successfully authenticated");
         validateButton.innerText = "Successfully authenticated!";
         // switch
         location.reload();
       }else{
-        alert("Invalid credentials");
+        // alert("Invalid credentials");
         validateButton.innerText = "Invalid credentials!";
         return;
       }
