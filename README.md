@@ -1,2 +1,2 @@
 # syncfin
- use a device with a web browser as speakers for another jellyfin player
+Use a device with a web browser as speakers for another jellyfin player. Kinda sucks at syncing also relies on said player being compliant with sending playback state to the server frequently enough (spoiler: many aren't). syncing kinda sucks rn, goal is to get within 10ms error margins, but this is hard esp on low powered device web browsers (likely want to write a native version sometime).
